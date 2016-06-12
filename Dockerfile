@@ -96,6 +96,7 @@ RUN \
     && rm -rf orange/.git \
     && mv orange /usr/local \
     && chmod 755 /usr/local/orange/start.sh \
+    && rm -rf /tmp/*
 
 
 # Show install info
