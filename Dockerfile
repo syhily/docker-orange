@@ -3,6 +3,7 @@ MAINTAINER Syhily, syhily@gmail.com
 
 # Docker Build Arguments
 ARG RESTY_VERSION="1.9.15.1"
+ENV LUAJIT_VERSION="LuaJIT-2.1.0-beta2"
 ARG RESTY_OPENSSL_VERSION="1.0.2e"
 ARG RESTY_PCRE_VERSION="8.38"
 ARG RESTY_J="1"
@@ -82,12 +83,19 @@ RUN \
     && yum clean all
 
 
-# 1) Install lor
-# 2) Install orange
-# 3) Cleanup
+# 1) Install LuaJIT
+# 2) Install lor
+# 3) Install orange
+# 4) Cleanup
 
 RUN \
     cd /tmp \
+    && curl -fSL http://luajit.org/download/${LUAJIT_VERSION}.tar.gz -o ${LUAJIT_VERSION}.tar.gz \
+    && tar zxf ${LUAJIT_VERSION}.tar.gz \
+    && cd /tmp/${LUAJIT_VERSION} \
+    && make INSTALL_TNAME=luajit \
+    && make install \
+    && ln -sf /usr/local/bin/luajit-2.1.0-beta2 /usr/local/bin/luajit \
     && git clone https://github.com/sumory/lor \
     && cd lor \
     && sh install.sh \
@@ -103,6 +111,8 @@ RUN \
 
 RUN \
     nginx -V \
-    && lord -V
+    && lord version
 
 CMD cd /usr/local/orange && sh start.sh
+
+EXPOSE 80 9999 8001 9001
