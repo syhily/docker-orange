@@ -72,7 +72,7 @@ RUN \
     && ./configure -j${RESTY_J} ${_RESTY_CONFIG_DEPS} ${RESTY_CONFIG_OPTIONS} \
     && make -j${RESTY_J} \
     && make -j${RESTY_J} install \
-    && ln -s /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/nginx
+    && ln -s /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/nginx \
     && cd /tmp \
     && rm -rf \
         openssl-${RESTY_OPENSSL_VERSION} \
