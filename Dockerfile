@@ -58,6 +58,6 @@ RUN \
 # Set the default command to execute
 # when creating a new container
 
-CMD orange
+CMD cd /usr/local/orange && ./start.sh
 
 EXPOSE 80 9999 8001 9001
