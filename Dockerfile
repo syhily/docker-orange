@@ -1,8 +1,11 @@
 FROM openresty/openresty:latest-centos
 MAINTAINER Syhily, syhily@gmail.com
 
+
 # Docker Build Arguments
+
 ARG LUAJIT_VERSION="LuaJIT-2.1.0-beta2"
+
 
 # 1) Install yum dependencies
 # 2) Cleanup
@@ -12,6 +15,7 @@ RUN \
         libuuid-devel \
         git \
     && yum clean all
+
 
 # 1) Install LuaJIT
 # 2) Install lor
@@ -39,12 +43,21 @@ RUN \
     && rm -rf /tmp/*
 
 
+# Append "daemon off;" to the beginning of the configuration
+
+RUN echo "daemon off;" >> /usr/local/orange/conf/nginx.conf
+
+
 # Show install info
 
 RUN \
     nginx -V \
     && lord version
 
-# CMD orange
+
+# Set the default command to execute
+# when creating a new container
+
+CMD orange
 
 EXPOSE 80 9999 8001 9001
