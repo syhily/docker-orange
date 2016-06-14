@@ -41,7 +41,7 @@ docker run -d --name orange \
     syhily/orange
 ```
 
-Access orange [dashboard](http://127.0.0.1:9999) (Default Username: admin, Password: )
+Access orange [dashboard](http://127.0.0.1:9999) (Default Username: admin, Default Password: orange_admin)
 
 ### Reload Your Orange
 
