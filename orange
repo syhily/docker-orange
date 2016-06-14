@@ -17,11 +17,19 @@ stop() {
     nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf -s quit
 }
 
+reload() {
+    echo "Reload Orange ..."
+    nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf -s reload
+}
+
 case "$1" in
     start)
         $1
         ;;
     stop)
+        $1
+        ;;
+    reload)
         $1
         ;;
     *)

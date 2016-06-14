@@ -11,9 +11,15 @@ API Gateway based on OpenResty.
 ### Start Orange
 
 docker run -d --name orange \
+    -p 8888:8888 \
+    -p 9999:9999 \
     syhily/orange
 
+Access orange [dashboard](http://127.0.0.1:9999)
+
 ### Reload Your Orange
+
+docker exec -it orange orange reload
 
 ## User Feedback
 

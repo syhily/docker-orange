@@ -4,6 +4,8 @@ MAINTAINER Syhily, syhily@gmail.com
 
 # Docker Build Arguments, For further upgrade
 
+ARG LUAJIT_MIRROR="https://cat.yufan.me/dev/luajit"
+# ARG LUAJIT_MIRROR="http://luajit.org/download"
 ARG LUAJIT_VERSION="LuaJIT-2.1.0-beta2"
 ARG LUAJIT_EXECUTEABLE_FILE_NAME="luajit-2.1.0-beta2"
 ENV ORANGE_PATH="/usr/local/orange"
@@ -28,7 +30,7 @@ RUN \
 
 RUN \
     cd /tmp \
-    && curl -fSL http://luajit.org/download/${LUAJIT_VERSION}.tar.gz -o ${LUAJIT_VERSION}.tar.gz \
+    && curl -fSL ${LUAJIT_MIRROR}/${LUAJIT_VERSION}.tar.gz -o ${LUAJIT_VERSION}.tar.gz \
     && tar zxf ${LUAJIT_VERSION}.tar.gz \
     && cd /tmp/${LUAJIT_VERSION} \
     && make INSTALL_TNAME=luajit \
