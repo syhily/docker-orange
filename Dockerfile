@@ -69,6 +69,7 @@ RUN \
     && mv orange /usr/local/bin \
     && mv orange.conf ${ORANGE_PATH} \
     && cd ${ORANGE_PATH} \
+    && touch conf/resolvers.conf
     && chown -R www:www ./*
 
 
