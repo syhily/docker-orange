@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# orange - this script starts and stops the orange daemon
+#
+# description:  Openresty is an HTTP(S) server, HTTP(S) reverse \
+#               proxy and IMAP/POP3 proxy server
+# processname: nginx
+# config:      /usr/local/orange/conf/nginx.conf
+
+start() {
+    echo "Start Orange ..."
+    nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf
+}
+
+stop() {
+    echo "Stop Orange ..."
+    nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf -s quit
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 2
+esac
