@@ -81,7 +81,6 @@ RUN \
 
 # Set the default command to execute
 # when creating a new container
-
 CMD orange start
 
 EXPOSE 8888 9999

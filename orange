@@ -7,6 +7,9 @@
 # processname: nginx
 # config:      /usr/local/orange/conf/nginx.conf
 
+touch ${ORANGE_PATH}/resolvers.conf
+echo resolver $(awk 'BEGIN{ORS=" "} $1=="nameserver" {print $2}' /etc/resolv.conf) ";" > ${ORANGE_PATH}/resolvers.conf
+
 start() {
     echo "Start Orange ..."
     nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf

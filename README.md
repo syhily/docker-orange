@@ -1,6 +1,6 @@
 # Orange in Docker
 
-This is a unofficial Docker image for Orange.
+This is an unofficial Docker image for Orange distribution.
 
 ## What is Orange?
 
@@ -8,14 +8,40 @@ API Gateway based on OpenResty.
 
 ## How to use this image
 
-### Start Orange
+First, orange requires a running mysql cluster before it starts. You can either use the official MySQL containers, or use your own.
 
+### Link Orange To A MySQL Container
+
+1. Run a MySQL container
+
+```bash
+docker run --name orange-database -e MYSQL_ROOT_PASSWORD=your_root_pwd -p 3306:3306 mysql:5.7
+```
+
+2. Create orange user and grant privileges
+
+```sql
+CREATE DATABASE orange;
+
+CREATE USER 'orange'@'orange-database' IDENTIFIED BY 'orange';
+
+GRANT ALL PRIVILEGES ON orange.* TO 'orange'@'orange-database';
+```
+
+3. Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/intall/orange-v0.1.1.sql).
+
+4. Link orange to this MySQL container
+
+```bash
 docker run -d --name orange \
+    --link orange-database:orange-database \
     -p 8888:8888 \
     -p 9999:9999 \
+    --security-opt seccomp:unconfined \
     syhily/orange
+```
 
-Access orange [dashboard](http://127.0.0.1:9999)
+Access orange [dashboard](http://127.0.0.1:9999) (Default Username: admin, Password: )
 
 ### Reload Your Orange
 
@@ -32,3 +58,5 @@ If you have any problems with or questions about this image, please contact us t
 You are invited to contribute new features, fixes, or updates, large or small; we are always thrilled to receive pull requests, and do our best to process them as fast as we can.
 
 Before you start to code, we recommend discussing your plans through a [GitHub issue](https://github.com/syhily/docker-orange/issues), especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.
+
+
