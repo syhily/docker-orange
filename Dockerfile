@@ -58,12 +58,14 @@ RUN \
 
 ADD nginx.conf nginx.conf
 ADD orange orange
+ADD orange.conf orange.conf
 
 RUN \
     mv nginx.conf ${ORANGE_PATH}/conf \
     && mkdir -p ${ORANGE_PATH}/logs \
     && chmod 755 orange \
     && mv orange /usr/local/bin \
+    && mv orange.conf ${ORANGE_PATH} \
     && cd ${ORANGE_PATH} \
     && chown -R www:www ./*
 
