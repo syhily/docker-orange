@@ -23,9 +23,9 @@ docker run --name orange-database -e MYSQL_ROOT_PASSWORD=your_root_pwd -p 3306:3
 ```sql
 CREATE DATABASE orange;
 
-CREATE USER 'orange'@'orange-database' IDENTIFIED BY 'orange';
+CREATE USER 'orange'@'%' IDENTIFIED BY 'orange';
 
-GRANT ALL PRIVILEGES ON orange.* TO 'orange'@'orange-database';
+GRANT ALL PRIVILEGES ON orange.* TO 'orange'@'%';
 ```
 
 3. Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/intall/orange-v0.1.1.sql).

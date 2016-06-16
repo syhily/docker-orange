@@ -20,6 +20,7 @@ RUN \
     yum install -y \
         libuuid-devel \
         git \
+        dnsmasq \
     && yum clean all
 
 
@@ -27,6 +28,7 @@ RUN \
 # 2) Install lor
 # 3) Install orange
 # 4) Cleanup
+# 5) dnsmasq
 
 RUN \
     cd /tmp \
@@ -46,7 +48,14 @@ RUN \
     && mv orange /usr/local \
     && ln -s /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/nginx \
     && rm -rf /tmp/* \
-    && yum remove -y git
+    && yum remove -y git \
+    && echo "user=root" > /etc/dnsmasq.conf \
+    && echo 'domain-needed' >> /etc/dnsmasq.conf \
+    && echo 'listen-address=127.0.0.1' >> /etc/dnsmasq.conf \
+    && echo 'resolv-file=/etc/resolv.dnsmasq.conf' >> /etc/dnsmasq.conf \
+    && echo 'conf-dir=/etc/dnsmasq.d' >> /etc/dnsmasq.conf \
+    && echo 'nameserver 8.8.8.8' >> /etc/resolv.dnsmasq.conf \
+    && echo 'nameserver 8.8.4.4' >> /etc/resolv.dnsmasq.conf
 
 
 # 1) Add User
@@ -69,7 +78,6 @@ RUN \
     && mv orange /usr/local/bin \
     && mv orange.conf ${ORANGE_PATH} \
     && cd ${ORANGE_PATH} \
-    && touch conf/resolvers.conf \
     && chown -R www:www ./*
 
 

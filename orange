@@ -7,20 +7,22 @@
 # processname: nginx
 # config:      /usr/local/orange/conf/nginx.conf
 
-
 start() {
-    echo resolver $(awk 'BEGIN{ORS=" "} $1=="nameserver" {print $2}' /etc/resolv.conf) ";" > ${ORANGE_PATH}/conf/resolvers.conf
     echo "Start Orange ..."
+    dnsmasq
     nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf
 }
 
 stop() {
     echo "Stop Orange ..."
+    killall dnsmasq
     nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf -s quit
 }
 
 reload() {
     echo "Reload Orange ..."
+    killall dnsmasq
+    dnsmasq
     nginx -p ${ORANGE_PATH} -c ${ORANGE_PATH}/conf/nginx.conf -s reload
 }
 
