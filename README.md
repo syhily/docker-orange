@@ -44,6 +44,12 @@ docker run -d --name orange \
 
 Access orange [dashboard](http://127.0.0.1:9999) (Default Username: admin, Default Password: orange_admin)
 
+### Relative Link's
+
+1. [Orange Dashboard](http://127.0.0.1:9999)
+2. [Orange API Endpoint](http://127.0.0.1:7777)
+3. [Orange Gateway Access Endpoint](http://127.0.0.1:8888)
+
 ### Reload Your Orange
 
 ```bash
