@@ -92,4 +92,4 @@ RUN \
 # when creating a new container
 CMD orange start
 
-EXPOSE 8888 9999
+EXPOSE 7777 8888 9999

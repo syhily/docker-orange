@@ -35,6 +35,7 @@ GRANT ALL PRIVILEGES ON orange.* TO 'orange'@'%';
 ```bash
 docker run -d --name orange \
     --link orange-database:orange-database \
+    -p 7777:7777 \
     -p 8888:8888 \
     -p 9999:9999 \
     --security-opt seccomp:unconfined \
