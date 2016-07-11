@@ -28,7 +28,7 @@ CREATE USER 'orange'@'%' IDENTIFIED BY 'orange';
 GRANT ALL PRIVILEGES ON orange.* TO 'orange'@'%';
 ```
 
-- Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/intall/orange-v0.2.0.sql).
+- Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/install/orange-v0.2.0.sql).
 
 - Link orange to this MySQL container
 
