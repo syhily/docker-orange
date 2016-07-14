@@ -11,7 +11,7 @@ ARG LUAJIT_EXECUTEABLE_FILE_NAME="luajit-2.1.0-beta2"
 ENV ORANGE_PATH="/usr/local/orange"
 ARG ORANGE_GITHUB_REPO="https://github.com/sumory/orange.git"
 ARG LOR_GITHUB_REPO="https://github.com/sumory/lor.git"
-ARG ORANGE_VERSION="v0.1.3"
+ARG ORANGE_VERSION="master"
 
 # 1) Install yum dependencies
 # 2) Cleanup
