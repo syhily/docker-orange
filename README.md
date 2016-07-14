@@ -1,6 +1,6 @@
 # Orange in Docker
 
-[![](https://imagelayers.io/badge/syhily/orange:latest.svg)](https://imagelayers.io/?images=syhily/orange:latest 'Get your own badge on imagelayers.io')
+![](https://img.shields.io/docker/pulls/syhily/orange.svg) ![](https://img.shields.io/docker/stars/syhily/orange.svg) ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
 This is an unofficial Docker image for Orange distribution.
 
