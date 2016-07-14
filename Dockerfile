@@ -39,12 +39,14 @@ RUN \
     && make install \
     && ln -sf /usr/local/bin/${LUAJIT_EXECUTEABLE_FILE_NAME} /usr/local/bin/luajit \
     && git clone ${LOR_GITHUB_REPO} \
-    && git checkout ${ORANGE_VERSION} \
     && rm -rf lor/.git \
     && cd lor \
     && sh install.sh \
     && cd /tmp \
     && git clone ${ORANGE_GITHUB_REPO} \
+    && cd orange \
+    && git checkout ${ORANGE_VERSION} \
+    && cd .. \
     && rm -rf orange/.git \
     && mv orange /usr/local \
     && ln -s /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/nginx \
