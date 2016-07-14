@@ -1,5 +1,7 @@
 # Orange in Docker
 
+[![](https://imagelayers.io/badge/syhily/orange:latest.svg)](https://imagelayers.io/?images=syhily/orange:latest 'Get your own badge on imagelayers.io')
+
 This is an unofficial Docker image for Orange distribution.
 
 ## What is Orange?
