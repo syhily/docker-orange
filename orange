@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # orange - this script starts and stops the orange daemon
 #
