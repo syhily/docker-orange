@@ -93,6 +93,6 @@ RUN \
 
 # Set the default command to execute
 # when creating a new container
-CMD orange start
+ENTRYPOINT ["/usr/local/bin/orange", "start"]
 
 EXPOSE 7777 8888 9999
