@@ -20,19 +20,25 @@ First, orange requires a running mysql cluster before it starts. You can either 
 docker run --name orange-database -e MYSQL_ROOT_PASSWORD=your_root_pwd -p 3306:3306 mysql:5.7
 ```
 
+This is not the only way to get a runing mysql instance.
+
 - Create orange user and grant privileges
 
 ```sql
-CREATE DATABASE orange;
+CREATE DATABASE your_database_name;
 
-CREATE USER 'orange'@'%' IDENTIFIED BY 'orange';
+CREATE USER 'your_database_user'@'%' IDENTIFIED BY 'your_database_password';
 
-GRANT ALL PRIVILEGES ON orange.* TO 'orange'@'%';
+GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_database_name'@'%';
 ```
 
-- Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/install/orange-v0.2.0.sql).
+Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/install/orange-v0.6.0.sql).
 
-- Link orange to this MySQL container
+- Runing a orange instance and initialize database scheme.
+
+Modify the `{block}` content, and execute it.
+
+`ORANGE_INIT_DB` variable would be deployment friendly on production.
 
 ```bash
 docker run -d --name orange \
@@ -41,6 +47,11 @@ docker run -d --name orange \
     -p 8888:8888 \
     -p 9999:9999 \
     --security-opt seccomp:unconfined \
+    -e ORANGE_DATABASE={your_database_name} \
+    -e ORANGE_HOST=orange-database \
+    -e ORANGE_PORT={your_database_port} \
+    -e ORANGE_USER={your_database_user} \
+    -e ORANGE_PWD={your_database_password} \
     syhily/orange
 ```
 
@@ -52,10 +63,19 @@ Access orange [dashboard](http://127.0.0.1:9999) (Default Username: admin, Defau
 2. [Orange API Endpoint](http://127.0.0.1:7777)
 3. [Orange Gateway Access Endpoint](http://127.0.0.1:8888)
 
-### Reload Your Orange
+### Operation Your Orange
 
 ```bash
-docker exec -it orange orange reload
+docker exec -it orange orange COMMAND [OPTIONS]
+
+The commands are:
+
+start   Start the Orange Gateway
+stop    Stop current Orange
+reload  Reload the config of Orange
+restart Restart Orange
+version Show the version of Orange
+help    Show help tips
 ```
 
 ## User Feedback
