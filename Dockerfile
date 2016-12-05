@@ -3,7 +3,7 @@ MAINTAINER Syhily, syhily@gmail.com
 
 # Docker Build Arguments, For further upgrade
 ENV ORANGE_PATH="/usr/local/orange"
-ARG LOR_VERSION="0.2.4"
+ARG LOR_VERSION="0.2.6"
 ARG ORANGE_VERSION="0.6.0"
 
 # 1) Install yum dependencies
