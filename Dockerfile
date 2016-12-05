@@ -56,9 +56,6 @@ RUN \
     && echo "www:www" | chpasswd \
     && echo "www   ALL=(ALL)       ALL" >> /etc/sudoers
 
-ADD nginx.conf nginx.conf
-COPY nginx.conf ${ORANGE_PATH}/conf
-
 RUN \
     mkdir -p ${ORANGE_PATH}/logs \
     && chown -R www:www ${ORANGE_PATH}/*
