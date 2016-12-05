@@ -15,9 +15,9 @@ if [[ "X${ORANGE_DATABASE}" != "X" ]]; then
 fi
 
 # Nginx conf modify
-if cat ${NGINX_CONF} | grep "www www" > /dev/null
-then
-    sed -i "s/worker_processes  4;/user www www;\nworker_processes  4;/g" ${NGINX_CONF}
+grep "www www" ${NGINX_CONF} > /dev/null
+if [ $? -ne 0 ];then
+    sed -i "s/worker_processes  4;/user www www;\nworker_processes  4;\ndaemon  off;/g" ${NGINX_CONF}
 fi
 sed -i "s/resolver 114.114.114.114;/resolver 127.0.0.1 ipv6=off;/g" ${NGINX_CONF}
 sed -i "s/lua_package_path '..\/?.lua;\/usr\/local\/lor\/?.lua;;';/lua_package_path '\/usr\/local\/orange\/?.lua;\/usr\/local\/lor\/?.lua;;';/g" ${NGINX_CONF}
