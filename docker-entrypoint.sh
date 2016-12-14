@@ -24,3 +24,6 @@ sed -i "s/lua_package_path '..\/?.lua;\/usr\/local\/lor\/?.lua;;';/lua_package_p
 sed -i "s/listen       80;/listen       8888;/g" ${NGINX_CONF}
 
 /usr/local/bin/orange start
+
+# log to docker
+tail -f /usr/local/orange/logs/access.log
