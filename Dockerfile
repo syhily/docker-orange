@@ -44,6 +44,7 @@ RUN \
     && echo 'resolv-file=/etc/resolv.dnsmasq.conf' >> /etc/dnsmasq.conf \
     && echo 'conf-dir=/etc/dnsmasq.d' >> /etc/dnsmasq.conf \
     # This upstream dns server will cause some issues
+    && echo 'INTERNAL_DNS' >> /etc/resolv.dnsmasq.conf \
     && echo 'nameserver 8.8.8.8' >> /etc/resolv.dnsmasq.conf \
     && echo 'nameserver 8.8.4.4' >> /etc/resolv.dnsmasq.conf
 
