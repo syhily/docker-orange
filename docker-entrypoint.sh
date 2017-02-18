@@ -2,7 +2,9 @@
 ORANGE_CONF="/usr/local/orange/conf/orange.conf"
 NGINX_CONF="/usr/local/orange/conf/nginx.conf"
 
-# DNS resolve for nginx
+# DNS resolve for nginx and add the internal DNS
+INTERNAL_DNS=$(cat /etc/resolv.conf | grep nameserver)
+sed -i "s/INTERNAL_DNS/${INTERNAL_DNS}/g" /etc/resolv.dnsmasq.conf
 dnsmasq
 
 # if command starts with option, init mysql
