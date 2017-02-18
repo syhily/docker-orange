@@ -3,8 +3,8 @@ MAINTAINER Syhily, syhily@gmail.com
 
 # Docker Build Arguments, For further upgrade
 ENV ORANGE_PATH="/usr/local/orange"
-ARG LOR_VERSION="0.2.6"
-ARG ORANGE_VERSION="0.6.0"
+ARG LOR_VERSION="0.3.0"
+ARG ORANGE_VERSION="0.6.2"
 
 # 1) Install yum dependencies
 # 2) Cleanup
@@ -27,7 +27,7 @@ RUN \
     && curl -fSL https://github.com/sumory/lor/archive/v${LOR_VERSION}.tar.gz -o lor.tar.gz \
     && tar zxf lor.tar.gz \
     && cd /tmp/lor-${LOR_VERSION} \
-    && sh install.sh \
+    && make install \
 
     && cd /tmp \
     && curl -fSL https://github.com/sumory/orange/archive/${ORANGE_VERSION}.tar.gz -o orange.tar.gz \
