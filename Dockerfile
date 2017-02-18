@@ -30,7 +30,7 @@ RUN \
     && make install \
 
     && cd /tmp \
-    && curl -fSL https://github.com/sumory/orange/archive/${ORANGE_VERSION}.tar.gz -o orange.tar.gz \
+    && curl -fSL https://github.com/sumory/orange/archive/v${ORANGE_VERSION}.tar.gz -o orange.tar.gz \
     && tar zxf orange.tar.gz \
     && cd orange-${ORANGE_VERSION} \
     && make install \
