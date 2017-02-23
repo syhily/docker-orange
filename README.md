@@ -44,7 +44,7 @@ Modify the `{block}` content, and execute it.
 docker run -d --name orange \
     --link orange-database:orange-database \
     -p 7777:7777 \
-    -p 8888:8888 \
+    -p 8888:80 \
     -p 9999:9999 \
     --security-opt seccomp:unconfined \
     -e ORANGE_DATABASE={your_database_name} \
