@@ -1,4 +1,4 @@
-FROM openresty/openresty:latest-centos
+FROM centos:7
 MAINTAINER Syhily, syhily@gmail.com
 
 # Docker Build Arguments, For further upgrade
@@ -6,24 +6,33 @@ ENV ORANGE_PATH="/usr/local/orange"
 ARG LOR_VERSION="0.3.0"
 ARG ORANGE_VERSION="0.6.3"
 
-# 1) Install yum dependencies
-# 2) Cleanup
+ADD docker-entrypoint.sh docker-entrypoint.sh
+
+#  1) Set the bootstrap scripts
+#  2) Install yum dependencies
+#  3) Cleanup
+#  4) Install lor
+#  5) Install orange
+#  6) Cleanup
+#  7) dnsmasq
+#  8) Add User
+#  9) Add configuration file & bootstrap file
+# 10) Fix file permission
 RUN \
-    yum install -y \
-        libuuid-devel \
+    chmod 755 docker-entrypoint.sh \
+    && mv docker-entrypoint.sh /usr/local/bin \
+
+    && yum-config-manager --add-repo https://openresty.org/yum/cn/centos/OpenResty.repo \
+    && yum install -y epel-release \
+    && yum install -y \
         dnsmasq \
-    && yum clean all
+        openresty \
+        openresty-resty \
+        make \
 
-# 1) Install lor
-# 2) Install orange
-# 3) Cleanup
-# 4) dnsmasq
+    && yum clean all \
 
-RUN \
-    cd /tmp \
-    && ln -s /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/nginx \
-    && ln -s /usr/local/openresty/bin/resty /usr/local/bin/resty \
-
+    && cd /tmp \
     && curl -fSL https://github.com/sumory/lor/archive/v${LOR_VERSION}.tar.gz -o lor.tar.gz \
     && tar zxf lor.tar.gz \
     && cd /tmp/lor-${LOR_VERSION} \
@@ -46,33 +55,13 @@ RUN \
     # This upstream dns server will cause some issues
     && echo 'INTERNAL_DNS' >> /etc/resolv.dnsmasq.conf \
     && echo 'nameserver 8.8.8.8' >> /etc/resolv.dnsmasq.conf \
-    && echo 'nameserver 8.8.4.4' >> /etc/resolv.dnsmasq.conf
+    && echo 'nameserver 8.8.4.4' >> /etc/resolv.dnsmasq.conf \
 
-# 1) Add User
-# 2) Add configuration file & bootstrap file
-# 3) Fix file permission
-
-RUN \
-    useradd www \
+    && useradd www \
     && echo "www:www" | chpasswd \
-    && echo "www   ALL=(ALL)       ALL" >> /etc/sudoers
-
-RUN \
-    mkdir -p ${ORANGE_PATH}/logs \
+    && echo "www   ALL=(ALL)       ALL" >> /etc/sudoers \
+    && mkdir -p ${ORANGE_PATH}/logs \
     && chown -R www:www ${ORANGE_PATH}/*
-
-# Show installization info for debug
-
-RUN \
-    nginx -V
-
-# Set the default command to execute
-# when creating a new container
-
-ADD docker-entrypoint.sh docker-entrypoint.sh
-RUN \
-    chmod 755 docker-entrypoint.sh
-COPY docker-entrypoint.sh /usr/local/bin
 
 EXPOSE 7777 8888 9999
 
