@@ -32,7 +32,7 @@ CREATE USER 'your_database_user'@'%' IDENTIFIED BY 'your_database_password';
 GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_database_name'@'%';
 ```
 
-Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/install/orange-v0.6.0.sql).
+Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/install/orange-v0.6.4.sql).
 
 - Runing a orange instance and initialize database scheme.
 
