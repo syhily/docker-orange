@@ -16,10 +16,37 @@ if [[ "X${ORANGE_DATABASE}" != "X" ]]; then
     sed -i "s/\"password\": \"\"/\"password\": \"${ORANGE_PWD}\"/g" ${ORANGE_CONF}
 fi
 
+# Waiting for a mysql fully started
+netConnection() {
+    while true
+    do
+        TELNET_1=`echo "quit" | telnet $1 $2 | grep "Escape character is"`
+        if [ "$?" -ne 0 ]; then
+            echo "Reconnect after 5 seconds"
+            sleep 5
+        else
+            echo "Connected"
+            break;
+        fi
+    done
+}
+
+waitForDatabase() {
+    echo "Check database connection"
+    netConnection ${ORANGE_HOST} ${ORANGE_PORT}
+    echo "Database connected"
+}
+
+waitForDatabase
+
 # Nginx conf modify
 grep "www www" ${NGINX_CONF} > /dev/null
 if [ $? -ne 0 ];then
     sed -i "s/worker_processes  4;/user www www;\nworker_processes  4;\ndaemon  off;/g" ${NGINX_CONF}
+
+    # Auto Init database for the first time
+    ORANGE_DATABASE_IP=`getent hosts ${ORANGE_HOST} | awk '{ print $1 }'`
+    orange store -t=mysql -d=${ORANGE_DATABASE} -hh=${ORANGE_DATABASE_IP} -pp=${ORANGE_PORT} -p=${ORANGE_PWD} -u=${ORANGE_USER} -o=init -f=/usr/local/orange/install/orange-v${ORANGE_VERSION}.sql
 fi
 sed -i "s/resolver 114.114.114.114;/resolver 127.0.0.1 ipv6=off;/g" ${NGINX_CONF}
 sed -i "s/lua_package_path '..\/?.lua;\/usr\/local\/lor\/?.lua;;';/lua_package_path '\/usr\/local\/orange\/?.lua;\/usr\/local\/lor\/?.lua;;';/g" ${NGINX_CONF}
