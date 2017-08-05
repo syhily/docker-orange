@@ -1,0 +1,29 @@
+# A simple bundle docker container for orange
+
+db:
+  image: mysql:5.7
+  environment:
+    - MYSQL_DATABASE=orange
+    - MYSQL_USER=orange
+    - MYSQL_PASSWORD=12345678
+    - MYSQL_RANDOM_ROOT_PASSWORD=true
+  # Port is not required to be exposed, but recommend for debug purpose
+  ports:
+    - "3306:3306"
+
+orange:
+  build: .
+  # The prebuilt image is avaliable below
+  # image: syhily/orange
+  ports:
+    - "7777:7777"
+    - "8888:80"
+    - "9999:9999"
+  environment:
+    - ORANGE_HOST=db
+    - ORANGE_PORT=3306
+    - ORANGE_USER=orange
+    - ORANGE_PWD=12345678
+    - ORANGE_DATABASE=orange
+  links:
+    - db
