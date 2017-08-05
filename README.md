@@ -12,27 +12,42 @@ API Gateway based on OpenResty.
 
 First, orange requires a running mysql cluster before it starts. You can either use the official MySQL containers, or use your own.
 
-### Link Orange To A MySQL Container
+### Using docker-compose (Recommend)
+
+* start a Orange container + its dependencies (mysql)
+
+```console
+$ docker-compose run --service-ports --rm orange
+# or
+$ make run
+```
+
+---
+
+Run in debug mode (bash) :
+
+```console
+$ make debug-run
+```
+
+#### Common used commands
+
+1. `docker-compose up` Bootstrap a brand new alert service container. if a old container exists, docker compose would reuse it in case of losing data.
+2. `docker-compose down` Destroy all the containers defined in this compose file.
+3. `docker-compose start` Start the existed containers.
+4. `docker-compose stop` Stop the existed containers.
+5. `docker-compose restart` Restart the existed containers, the new configuration would be applied immediately.
+6. `docker-compose run -d --service-ports --rm orange` Almost the same with `docker-compose up`.
+
+### Start orange step by step
 
 - Run a MySQL container
 
 ```bash
-docker run --name orange-database -e MYSQL_ROOT_PASSWORD=your_root_pwd -p 3306:3306 mysql:5.7
+docker run --name orange-database -e MYSQL_ROOT_PASSWORD=your_root_pwd -e MYSQL_DATABASE=orange -p 3306:3306 mysql:5.7
 ```
 
-This is not the only way to get a runing mysql instance.
-
-- Create orange user and grant privileges
-
-```sql
-CREATE DATABASE your_database_name;
-
-CREATE USER 'your_database_user'@'%' IDENTIFIED BY 'your_database_password';
-
-GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_database_name'@'%';
-```
-
-Import the initial data from a database [dump](https://github.com/sumory/orange/blob/master/install/orange-v0.6.4.sql).
+This is the only way to get a runing mysql instance for orange.
 
 - Runing a orange instance and initialize database scheme.
 
