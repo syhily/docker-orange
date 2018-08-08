@@ -61,6 +61,7 @@ RUN \
     && mkdir -p ${ORANGE_PATH}/logs \
     && chown -R www:www ${ORANGE_PATH}/*
 
+VOLUME /usr/local/orange/conf
 EXPOSE 7777 80 9999
 
 # Daemon
