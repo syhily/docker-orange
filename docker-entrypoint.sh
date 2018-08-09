@@ -8,13 +8,13 @@ sed -i "s/INTERNAL_DNS/${INTERNAL_DNS}/g" /etc/resolv.dnsmasq.conf
 dnsmasq
 
 # if command starts with option, init mysql
-#if [[ "X${ORANGE_DATABASE}" != "X" ]]; then
-#    sed -i "s/\"host\": \"127.0.0.1\"/\"host\": \"${ORANGE_HOST}\"/g" ${ORANGE_CONF}
-###    sed -i "s/\"port\": \"3306\"/\"port\": \"${ORANGE_PORT}\"/g" ${ORANGE_CONF}
-##    sed -i "s/\"database\": \"orange\"/\"database\": \"${ORANGE_DATABASE}\"/g" ${ORANGE_CONF}
-#    sed -i "s/\"user\": \"root\"/\"user\": \"${ORANGE_USER}\"/g" ${ORANGE_CONF}
- #   sed -i "s/\"password\": \"\"/\"password\": \"${ORANGE_PWD}\"/g" ${ORANGE_CONF}
-#fi
+if [[ "X${ORANGE_DATABASE}" != "X" ]]; then
+    sed -i "s/\"host\": \"127.0.0.1\"/\"host\": \"${ORANGE_HOST}\"/g" ${ORANGE_CONF}
+    sed -i "s/\"port\": \"3306\"/\"port\": \"${ORANGE_PORT}\"/g" ${ORANGE_CONF}
+    sed -i "s/\"database\": \"orange\"/\"database\": \"${ORANGE_DATABASE}\"/g" ${ORANGE_CONF}
+    sed -i "s/\"user\": \"root\"/\"user\": \"${ORANGE_USER}\"/g" ${ORANGE_CONF}
+    sed -i "s/\"password\": \"\"/\"password\": \"${ORANGE_PWD}\"/g" ${ORANGE_CONF}
+fi
 
 # Waiting for a mysql fully started
 netConnection() {
@@ -40,20 +40,27 @@ waitForDatabase() {
 waitForDatabase
 
 # Nginx conf modify
-#grep "www www" ${NGINX_CONF} > /dev/null
-#if [ $? -ne 0 ];then
-#    sed -i "s/worker_processes  4;/user www www;\nworker_processes  4;\ndaemon  off;/g" ${NGINX_CONF}
+grep "www www" ${NGINX_CONF} > /dev/null
+if [ $? -ne 0 ];then
+    sed -i "s/worker_processes  4;/user www www;\nworker_processes  4;\ndaemon  off;/g" ${NGINX_CONF}
 
     # Auto Init database for the first time
-    # ORANGE_DATABASE_IP=`getent hosts ${ORANGE_HOST} | awk '{ print $1 }'`
-    #  close 
-    #orange store -t=mysql -d=${ORANGE_DATABASE} -hh=${ORANGE_DATABASE_IP} -pp=${ORANGE_PORT} -p=${ORANGE_PWD} -u=${ORANGE_USER} -o=init -f=/usr/local/orange/install/orange-v${ORANGE_VERSION}.sql
-#fi
-#sed -i "s/resolver 114.114.114.114;/resolver 127.0.0.1 ipv6=off;/g" ${NGINX_CONF}
-#sed -i "s/lua_package_path '..\/?.lua;\/usr\/local\/lor\/?.lua;;';/lua_package_path '\/usr\/local\/orange\/?.lua;\/usr\/local\/lor\/?.lua;;';/g" ${NGINX_CONF}
+    ORANGE_DATABASE_IP=`getent hosts ${ORANGE_HOST} | awk '{ print $1 }'`
+    if [[ -z "${ORANGE_DB_SETUP}" ]]; then
+        echo "db existed"
+    else
+        echo "init db"
+        orange store -t=mysql -d=${ORANGE_DATABASE} -hh=${ORANGE_DATABASE_IP} -pp=${ORANGE_PORT} -p=${ORANGE_PWD} -u=${ORANGE_USER} -o=init -f=/usr/local/orange/install/orange-v${ORANGE_VERSION}.sql
+    fi
+fi
+# for k8s
+RESOLVER=`cat /etc/resolv.conf | grep nameserver  |  grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'`
+sed -i "s/resolver 114.114.114.114;/resolver ${RESOLVER};/g" ${NGINX_CONF}
+sed -i "s/lua_package_path '..\/?.lua;\/usr\/local\/lor\/?.lua;;';/lua_package_path '\/usr\/local\/orange\/?.lua;\/usr\/local\/lor\/?.lua;;';/g" ${NGINX_CONF}
 #sed -i "s/listen       80;/listen       8888;/g" ${NGINX_CONF}
 
 /usr/local/bin/orange start
 
 # log to docker
-tail -f /usr/local/orange/logs/access.log
+#touch /usr/local/orange/logs/access.log
+tail -f /usr/local/orange/logs/access.log /usr/local/orange/logs/error.log
